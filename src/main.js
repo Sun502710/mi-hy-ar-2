@@ -189,7 +189,7 @@ async function loadModel(anchor) {
         //
         // 可通过URL参数 ?size=0.8 临时覆盖（无需改代码）
         const sizeOverride = parseFloat(new URLSearchParams(window.location.search).get('size'));
-        const TARGET_SIZE = !isNaN(sizeOverride) ? sizeOverride : 0.8;  // 默认0.8 = 海报短边80%
+        const TARGET_SIZE = !isNaN(sizeOverride) ? sizeOverride : 1.5;  // 默认1.5 = CABLE CITY 塔
 
         const maxDim = Math.max(size.x, size.y, size.z);
         if (maxDim > 0) {
