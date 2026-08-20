@@ -258,7 +258,7 @@ async function loadModel(anchor) {
         // 模拟苔藓的体积感——像毛皮、绒毛、苔藓那种"植绒"效果
         if (!state.noMossMode) {
           const SHELL_COUNT = 6;  // 外壳层数，越多越蓬松但越耗性能
-          const SHELL_DISTANCE = 0.008;  // 每层之间的距离（AR单位，约0.12cm）
+          const SHELL_DISTANCE = 0.004 / (state.model ? state.model.scale.x : 1);
           state.shellMaterials = [];
 
           for (let i = 1; i <= SHELL_COUNT; i++) {
