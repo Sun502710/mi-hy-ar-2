@@ -1,0 +1,299 @@
+/* 苔藓生长 · 建筑展览 AR 样式
+   设计方向：低调、有机、克制
+   主色：青苔绿 + 旧纸色，避免霓虹和科技感 */
+
+:root {
+  --moss-deep: #2d3a2a;
+  --moss-bright: #6b8e4e;
+  --moss-pale: #c4d4a8;
+  --paper: #f4f0e6;
+  --paper-shadow: rgba(45, 58, 42, 0.15);
+  --ink: #1a1f17;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: 'Georgia', 'Times New Roman', serif;
+  background: #000;
+  color: var(--paper);
+}
+
+/* AR 渲染容器 */
+#ar-container {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* 加载层 */
+.loading {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ink);
+  z-index: 100;
+  transition: opacity 0.6s ease;
+}
+
+.loading.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.loader-text {
+  font-size: 14px;
+  letter-spacing: 0.15em;
+  color: var(--moss-pale);
+  font-style: italic;
+}
+
+/* 扫描引导 */
+.hint {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 50;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+.hint.hidden {
+  opacity: 0;
+}
+
+.hint-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.scan-icon {
+  width: 120px;
+  height: 120px;
+  color: var(--moss-pale);
+  opacity: 0.85;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.scan-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 0.85; }
+  50% { transform: scale(1.05); opacity: 1; }
+}
+
+.hint p {
+  color: var(--paper);
+  font-size: 15px;
+  letter-spacing: 0.05em;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+}
+
+/* 苔藓生长控制 UI */
+.ui {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 24px 28px 36px;
+  background: linear-gradient(
+    to top,
+    rgba(26, 31, 23, 0.85) 0%,
+    rgba(26, 31, 23, 0.5) 70%,
+    transparent 100%
+  );
+  z-index: 40;
+  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1),
+              opacity 0.5s ease;
+}
+
+.ui.hidden {
+  transform: translateY(100%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.ui-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 14px;
+}
+
+.label-text {
+  font-size: 13px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--moss-pale);
+}
+
+.label-value {
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--paper);
+  font-variant-numeric: tabular-nums;
+}
+
+/* 自定义滑动条 */
+#growth-slider {
+  width: 100%;
+  height: 36px;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+#growth-slider::-webkit-slider-runnable-track {
+  height: 2px;
+  background: linear-gradient(
+    to right,
+    var(--moss-deep) 0%,
+    var(--moss-bright) 50%,
+    var(--moss-pale) 100%
+  );
+  border-radius: 1px;
+}
+
+#growth-slider::-moz-range-track {
+  height: 2px;
+  background: linear-gradient(
+    to right,
+    var(--moss-deep) 0%,
+    var(--moss-bright) 50%,
+    var(--moss-pale) 100%
+  );
+  border-radius: 1px;
+}
+
+#growth-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  background: var(--paper);
+  border: 2px solid var(--moss-bright);
+  border-radius: 50%;
+  margin-top: -11px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+  transition: transform 0.1s ease;
+}
+
+#growth-slider::-webkit-slider-thumb:active {
+  transform: scale(1.15);
+}
+
+#growth-slider::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  background: var(--paper);
+  border: 2px solid var(--moss-bright);
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+
+.ui-caption {
+  margin-top: 10px;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  color: var(--moss-pale);
+  opacity: 0.7;
+  text-align: center;
+  font-style: italic;
+}
+
+/* MindAR 相关元素的样式覆盖 */
+.mindar-ui-overlay {
+  z-index: 30 !important;
+}
+
+/* ============ 调试面板（?debug=1 显示） ============ */
+#debug-panel {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  width: 280px;
+  background: rgba(20, 24, 18, 0.92);
+  color: var(--paper);
+  padding: 14px;
+  border-radius: 8px;
+  z-index: 200;
+  font-family: 'SF Mono', Menlo, monospace;
+  font-size: 12px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+  border: 1px solid rgba(196, 212, 168, 0.2);
+}
+
+.dbg-title {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--moss-pale);
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(196, 212, 168, 0.2);
+}
+
+.dbg-row {
+  display: grid;
+  grid-template-columns: 60px 1fr 50px;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.dbg-row label {
+  font-size: 11px;
+  color: var(--moss-pale);
+}
+
+.dbg-row input[type="range"] {
+  width: 100%;
+  height: 18px;
+}
+
+.dbg-row span {
+  font-size: 11px;
+  color: var(--paper);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#debug-panel button {
+  width: 100%;
+  margin-top: 6px;
+  padding: 8px;
+  background: var(--moss-bright);
+  color: var(--ink);
+  border: none;
+  border-radius: 4px;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+#debug-panel button:hover {
+  background: var(--moss-pale);
+}
+
+#dbg-close {
+  background: transparent !important;
+  color: var(--moss-pale) !important;
+  border: 1px solid rgba(196, 212, 168, 0.3) !important;
+}

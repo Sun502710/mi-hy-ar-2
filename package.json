@@ -1,0 +1,22 @@
+{
+  "name": "moss-ar",
+  "version": "0.1.0",
+  "description": "Microbial Hydroponics AR moss visualization",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host --port 5173",
+    "build": "vite build",
+    "preview": "vite preview --host"
+  },
+  "dependencies": {
+    "three": "0.160.0",
+    "mind-ar": "1.2.5"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0",
+    "@vitejs/plugin-basic-ssl": "^1.1.0"
+  },
+  "overrides": {
+    "canvas": "npm:noop2@^1.0.0"
+  }
+}

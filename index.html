@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>SPIKA · Microbial Hydroponics</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <!-- AR container: camera feed and 3D content render here -->
+  <div id="ar-container"></div>
+
+  <!-- Scan hint, shown before target is detected -->
+  <div id="hint" class="hint">
+    <div class="hint-inner">
+      <div class="scan-icon">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <path d="M10 30 V10 H30" stroke="currentColor" stroke-width="3" fill="none"/>
+          <path d="M70 10 H90 V30" stroke="currentColor" stroke-width="3" fill="none"/>
+          <path d="M90 70 V90 H70" stroke="currentColor" stroke-width="3" fill="none"/>
+          <path d="M30 90 H10 V70" stroke="currentColor" stroke-width="3" fill="none"/>
+        </svg>
+      </div>
+      <p>Point your camera at the printed poster</p>
+    </div>
+  </div>
+
+  <!-- Growth control UI, shown after target is detected -->
+  <div id="ui" class="ui hidden">
+    <div class="ui-label">
+      <span class="label-text">Moss Growth</span>
+      <span class="label-value" id="growth-value">0%</span>
+    </div>
+    <input
+      type="range"
+      id="growth-slider"
+      min="0"
+      max="100"
+      value="0"
+      step="1"
+    />
+    <div class="ui-caption">Slide to accelerate microbial succession</div>
+  </div>
+
+  <!-- Loading screen -->
+  <div id="loading" class="loading">
+    <div class="loader-text">SPIKA<br><span style="opacity:0.6;font-size:0.7em;letter-spacing:0.1em;">Preparing camera…</span></div>
+  </div>
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>
